@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { games } from "../data/games";
 import { useCart } from "../context/CartContext";
 
-const genres = ["Hamısı", "RPG", "Action", "Adventure", "Indie", "Shooter"];
+const genres = ["Hamısı", "RPG", "Action", "Adventure", "Indie", "Shooter", "Horror", "Simulation"];
 
 const Games = () => {
   const [search, setSearch] = useState("");
