@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { games } from "../data/games";
 import { useCart } from "../context/CartContext";
@@ -9,7 +9,16 @@ const Games = () => {
   const [search, setSearch] = useState("");
   const [genre, setGenre] = useState("Hamısı");
   const [sort, setSort] = useState("default");
+  const [loading, setLoading] = useState(true);
   const { addToCart } = useCart();
+
+  // sanki api-den data gelir kimi simulyasiya
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const filtered = games
     .filter((g) => {
@@ -23,6 +32,17 @@ const Games = () => {
       if (sort === "rating") return b.rating - a.rating;
       return 0;
     });
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-10 h-10 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-400 text-sm">Oyunlar yüklənir...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-900 text-white px-6 py-10">
@@ -38,7 +58,6 @@ const Games = () => {
           onChange={(e) => setSearch(e.target.value)}
           className="bg-gray-800 border border-gray-700 text-white px-4 py-2 rounded-lg outline-none focus:border-purple-500 w-full md:w-64 transition"
         />
-
         <select
           value={genre}
           onChange={(e) => setGenre(e.target.value)}
@@ -48,7 +67,6 @@ const Games = () => {
             <option key={g} value={g}>{g}</option>
           ))}
         </select>
-
         <select
           value={sort}
           onChange={(e) => setSort(e.target.value)}
